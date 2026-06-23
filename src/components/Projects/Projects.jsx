@@ -1,60 +1,10 @@
 import './Projects.css';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import ProjectCard from './ProjectCard';
+import { getFeaturedProjects } from '../../data/projects';
 
-const projects = [
-  {
-    id: 1,
-    title: 'Case Law Extraction Agent',
-    status: 'In Progress',
-    description:
-      'AI-powered system that extracts and structures ITAT case law data using intelligent agents and automated pipelines.',
-    features: [
-      'Extracts legal case data from ITAT orders',
-      'Structures unstructured legal documents',
-      'Backend system for managing extracted data',
-      'Focus on scalability and accuracy',
-    ],
-    techStack: ['Python', 'Automation', 'Backend Systems'],
-  },
-  {
-    id: 2,
-    title: 'CAPTCHA Solver for Legal Document Access',
-    description:
-      'Automated CAPTCHA detection and resolution system that intercepts document requests, solves image-based CAPTCHAs using OCR and rule-based logic, and seamlessly submits solutions within the request pipeline.',
-    features: [
-      'Detects CAPTCHA images in request workflows',
-      'Solves CAPTCHAs using OCR and rule-based techniques',
-      'Automatically submits solutions to resume downloads',
-      'Intelligent retry logic and error handling',
-    ],
-    techStack: ['Python', 'OCR', 'Automation', 'Web Scraping'],
-    // id: 2,
-    // title: 'LinkedIn Commenting Automation System',
-    // description:
-    //   'Automation framework that discovers LinkedIn posts and generates AI-assisted comments while maintaining safety and human review workflows.',
-    // features: [
-    //   'Scrapes LinkedIn posts',
-    //   'Generates rule-constrained AI comments',
-    //   'Human-review output workflow',
-    //   'Secure environment-based credential management',
-    // ],
-    // techStack: ['Python', 'Playwright', 'Automation'],
-    
-  },
-  {
-    id: 3,
-    title: 'TaxTech Intelligence Automation Pipeline',
-    description:
-      'Modular Python pipeline that collects and processes tax technology insights from unstructured sources and distributes them as structured intelligence.',
-    features: [
-      'Multi-stage scraping pipeline',
-      'Data extraction and normalization',
-      'Automated email distribution',
-      'Modular architecture',
-    ],
-    techStack: ['Python', 'Automation', 'Data Processing', 'Web Scraping'],
-  },
-];
+const featuredProjects = getFeaturedProjects();
 
 const Projects = () => {
   return (
@@ -62,11 +12,13 @@ const Projects = () => {
       <div className="projects-container">
         <div className="projects-header">
           <h2 className="projects-title">Selected Projects</h2>
-          <p className="projects-subtitle">Automation systems, data workflows, and developer tools</p>
+          <p className="projects-subtitle">
+            A preview of my work across front-end, full-stack, and automation
+          </p>
         </div>
 
         <div className="projects-grid">
-          {projects.map((project, index) => (
+          {featuredProjects.map((project, index) => (
             <ProjectCard
               key={project.id}
               project={project}
@@ -74,6 +26,18 @@ const Projects = () => {
             />
           ))}
         </div>
+
+        <motion.div
+          className="projects-see-all"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: 'easeOut', delay: 0.3 }}
+          viewport={{ once: true }}
+        >
+          <Link to="/projects" className="projects-see-all-link">
+            See all projects →
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
