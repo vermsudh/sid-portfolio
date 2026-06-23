@@ -273,3 +273,36 @@
     font-size: 0.93rem;
   }
 }
+
+@media (max-width: 480px) {
+  .projects-section {
+    padding: 64px 16px;
+  }
+
+  .project-card-body {
+    padding: 16px;
+  }
+
+  .project-title {
+    font-size: 1.08rem;
+  }
+
+  .project-card-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .project-tech {
+    margin-bottom: 0;
+  }
+
+  .project-live-link {
+    align-self: flex-start;
+  }
+
+  .projects-see-all-link {
+    width: 100%;
+    justify-content: center;
+  }
+}

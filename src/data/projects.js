@@ -1,6 +1,7 @@
 import globalLutyensImg from '../assets/project_screenshots/global_lutyens_website.png';
 import sriBalajiImg from '../assets/project_screenshots/sri_balaji_electronics.png';
 import weePortfolioImg from '../assets/project_screenshots/wee_portfolio.png';
+import awonImg from '../assets/project_screenshots/awon_website.png';
 import jobCopilotImg from '../assets/project_screenshots/job-copilot.png';
 import pinterestImg from '../assets/project_screenshots/Pinterest_dashboard.png';
 import caseLawImg from '../assets/project_screenshots/case_law_agent.png';
@@ -8,16 +9,6 @@ import captchaImg from '../assets/project_screenshots/captcha_solving agent.png'
 
 export const projects = [
   // --- FRONT-END ---
-  {
-    id: 1,
-    category: 'frontend',
-    title: 'Personal Portfolio',
-    description: 'A developer portfolio showcasing projects, skills, and experience. Built with a clean, minimal design and deployed on Vercel.',
-    techStack: ['React', 'Next.js', 'Tailwind CSS'],
-    liveLink: 'https://devsid-portfolio.vercel.app',
-    image: null,
-    featured: false,
-  },
   {
     id: 2,
     category: 'frontend',
@@ -50,7 +41,8 @@ export const projects = [
       'DNS setup (A records, CNAME on GoDaddy) and Google Analytics tagging',
     ],
     techStack: ['Framer', 'Responsive Design', 'SEO', 'DNS', 'Google Analytics'],
-    image: null,
+    liveLink: 'https://awon.world',
+    image: awonImg,
     featured: false,
   },
   {
@@ -84,6 +76,8 @@ export const projects = [
     ],
     techStack: ['Next.js', 'TypeScript', 'Supabase', 'Gemini AI', 'Tailwind CSS', 'dnd-kit'],
     image: jobCopilotImg,
+    imageFit: 'contain',
+    imageBg: '#111111',
     builtWith: 'Claude Code',
     featured: false,
   },
@@ -133,6 +127,8 @@ export const projects = [
     ],
     techStack: ['Python', 'OCR', 'Automation', 'Web Scraping'],
     image: captchaImg,
+    imageFit: 'contain',
+    imageBg: '#f8f8f8',
     featured: false,
   },
   {

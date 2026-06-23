@@ -1,6 +1,6 @@
 .projects-page {
   min-height: 100vh;
-  background-color: #ffffff;
+  background-color: #f5f5dc;
   padding: 100px 32px 80px;
   font-family: 'Inter', sans-serif;
   box-sizing: border-box;
@@ -109,5 +109,20 @@
   .filter-tab {
     padding: 8px 14px;
     font-size: 0.83rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .projects-page {
+    padding: 64px 16px 48px;
+  }
+
+  .projects-page-title {
+    font-size: 2rem;
+  }
+
+  .filter-tab {
+    padding: 7px 12px;
+    font-size: 0.8rem;
   }
 }

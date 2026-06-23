@@ -18,19 +18,18 @@ const ProjectCard = ({ project, index }) => {
       }}
       whileHover={{ y: -8, scale: 1.02 }}
     >
-      {/* Thumbnail — real screenshot or gradient placeholder */}
-      {project.image ? (
+      {/* Thumbnail — real screenshot only; no placeholder for missing images */}
+      {project.image && (
         <img
           src={project.image}
           alt={`${project.title} screenshot`}
           className="project-image"
+          style={{
+            ...(project.imagePosition && { objectPosition: project.imagePosition }),
+            ...(project.imageFit && { objectFit: project.imageFit }),
+            ...(project.imageBg && { backgroundColor: project.imageBg }),
+          }}
         />
-      ) : (
-        <div className="project-image-placeholder" aria-hidden="true">
-          <span className="project-image-initial">
-            {project.title.charAt(0)}
-          </span>
-        </div>
       )}
 
       <div className="project-card-body">
