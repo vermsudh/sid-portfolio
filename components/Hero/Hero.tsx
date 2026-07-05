@@ -49,7 +49,7 @@ const IMAGE_ASPECT = '3 / 4'
 const Hero = () => {
   return (
     <section className="min-h-screen bg-bg text-text pt-10 px-8 pb-0 box-border max-[900px]:pt-6 max-[900px]:px-5" id="hero">
-      <div className="mx-auto grid h-[calc(100vh-90px)] w-full max-w-[1400px] grid-cols-[0.85fr_1.3fr_0.85fr] items-stretch gap-8 max-[900px]:grid-cols-1 max-[900px]:h-auto max-[900px]:gap-10 max-[900px]:py-8">
+      <div className="mx-auto grid h-[calc(100vh-90px)] w-full max-w-[1400px] grid-cols-[0.75fr_1.5fr_0.75fr] items-stretch gap-8 max-[900px]:grid-cols-1 max-[900px]:h-auto max-[900px]:gap-10 max-[900px]:py-8">
         {/* Left column — name + short positioning line */}
         <motion.div
           className="flex flex-col justify-center max-[900px]:order-1"
@@ -80,7 +80,7 @@ const Hero = () => {
           animate="visible"
         >
           <div
-            className="relative w-[clamp(280px,36vw,560px)] overflow-hidden rounded-2xl border border-border max-[900px]:w-[clamp(240px,72vw,420px)]"
+            className="relative w-full max-w-[clamp(350px,40vw,630px)] overflow-hidden rounded-2xl border border-border max-[900px]:w-[clamp(280px,82vw,480px)] max-[900px]:max-w-none"
             style={{ aspectRatio: IMAGE_ASPECT }}
           >
             <Image
@@ -88,7 +88,7 @@ const Hero = () => {
               alt="Sudhanshu Verma"
               fill
               priority
-              sizes="(max-width: 900px) 72vw, 560px"
+              sizes="(max-width: 900px) 82vw, 630px"
               className="object-cover object-center"
             />
           </div>

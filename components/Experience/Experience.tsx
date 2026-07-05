@@ -80,11 +80,10 @@ const Experience = () => {
           {experiences.map((item, index) => (
             <article
               key={`${item.company}-${item.role}`}
-              className={`grid gap-7 items-start mb-9 last:mb-0 transition-[opacity,transform] duration-700 ease-out max-[768px]:gap-[18px] max-[768px]:mb-7 max-[520px]:mb-0 ${
+              className={`grid grid-cols-[96px_minmax(0,1fr)] gap-7 items-start mb-9 last:mb-0 transition-[opacity,transform] duration-700 ease-out max-[768px]:grid-cols-[64px_minmax(0,1fr)] max-[768px]:gap-[18px] max-[768px]:mb-7 max-[520px]:grid-cols-[52px_minmax(0,1fr)] max-[520px]:mb-0 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
               }`}
               style={{
-                gridTemplateColumns: '96px minmax(0,1fr)',
                 transitionDelay: `${index * 140}ms`,
               }}
             >

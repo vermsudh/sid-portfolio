@@ -57,8 +57,7 @@ const About = () => {
     <section
       id="about"
       ref={outerRef}
-      className="relative bg-bg"
-      style={{ minHeight: '250vh' }}
+      className="relative bg-bg min-h-[250vh] max-[640px]:min-h-[170vh]"
     >
       {/* Inner sticky content — stays pinned below the navbar until the outer
           wrapper's extra height runs out, then releases to Experience below. */}

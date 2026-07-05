@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import About from '@/components/About/About'
 import Experience from '@/components/Experience/Experience'
 
 export const metadata: Metadata = {
@@ -10,7 +9,6 @@ export const metadata: Metadata = {
 export default function ExperienceRoute() {
   return (
     <main className="min-h-screen bg-bg text-text">
-      <About />
       <Experience />
     </main>
   )

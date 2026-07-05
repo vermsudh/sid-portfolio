@@ -11,11 +11,10 @@ const Navbar = () => {
         <Link
           href="/"
           aria-label="Home"
-          className="relative flex items-center justify-center w-[44px] h-[44px] shrink-0 rounded-full border-2 border-text no-underline leading-none group font-display transition-colors duration-200 hover:border-accent-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+          className="relative shrink-0 no-underline leading-none group font-display text-[1.35rem] font-bold tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
         >
-          <span className="font-display text-[1.15rem] font-black text-text transition-colors duration-200 group-hover:text-accent-text">
-            S
-          </span>
+          <span className="text-text transition-colors duration-200 group-hover:text-accent-text">SID</span>
+          <span className="text-accent-text">.</span>
         </Link>
 
         <div className="flex items-center gap-[30px] max-[768px]:gap-[18px]">
