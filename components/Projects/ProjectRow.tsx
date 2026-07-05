@@ -29,7 +29,7 @@ function renderableImage(
   return thumbnail
 }
 
-function MediaSlot({ project }: { project: ProjectRowData }) {
+export function MediaSlot({ project }: { project: ProjectRowData }) {
   const img = renderableImage(project.thumbnail)
 
   return (
@@ -131,6 +131,17 @@ const ProjectRow = ({ project, index }: { project: ProjectRowData; index: number
             View case study
             <span className="transition-transform duration-200 group-hover/link:translate-x-1">→</span>
           </Link>
+
+          {project.link && (
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 font-body text-[0.95rem] font-medium text-muted transition-colors duration-200 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            >
+              Live Site ↗
+            </a>
+          )}
 
           {project.behanceLink && (
             <a

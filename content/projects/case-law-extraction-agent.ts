@@ -1,7 +1,10 @@
 import type { Project } from './types'
 import thumbnail from '@/assets/project_screenshots/case_law_agent.png'
 
-// Migrated unchanged from data/projects.js (id 8).
+// Migrated unchanged from data/projects.js (id 8). Confirmed by Sid as the 4th Home
+// featured project alongside `captcha-solving-agent` (§ Featured-Projects horizontal
+// scroll fix) — the two entries describe the same underlying ITAT pipeline from
+// different angles but are kept separate and both featured.
 export const caseLawExtractionAgent: Project = {
   id: 8,
   slug: 'case-law-extraction-agent',
@@ -18,5 +21,5 @@ export const caseLawExtractionAgent: Project = {
   tags: ['Python', 'Gemini API', 'Automation', 'Backend Systems'],
   link: null, // no live link in repo
   thumbnail,
-  featured: false,
+  featured: true,
 }

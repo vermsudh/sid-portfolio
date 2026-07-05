@@ -27,7 +27,12 @@ export const projects: Project[] = [
 // The confirmed Home featured set (spec §5.1②), in exact order. Hard-set by slug
 // so it's authoritative regardless of any `featured` flags. Single source of truth
 // for the Home featured section, the /projects ranked order, and the "next" wrap.
-const FEATURED_SLUGS = ['global-lutyens', 'wee-portfolio', 'captcha-solving-agent']
+const FEATURED_SLUGS = [
+  'global-lutyens',
+  'wee-portfolio',
+  'captcha-solving-agent',
+  'case-law-extraction-agent',
+]
 
 const bySlug = (slug: string) => projects.find((p) => p.slug === slug)
 

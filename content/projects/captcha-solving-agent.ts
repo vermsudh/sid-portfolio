@@ -5,7 +5,7 @@ import thumbnail from '@/assets/project_screenshots/captcha_solving agent.png'
 // "Captcha Solving Agent" is the unified version of the Astraea ITAT pipeline —
 // it merges captcha-solving with judicial case-law collection. NOTE: this overlaps
 // with the separate `case-law-extraction-agent` entry, which describes the same
-// underlying work; kept separate/non-featured pending Sid's call on merging.
+// underlying work; Sid confirmed both stay separate and both are featured.
 export const captchaSolvingAgent: Project = {
   id: 9,
   slug: 'captcha-solving-agent',

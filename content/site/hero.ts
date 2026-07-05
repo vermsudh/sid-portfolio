@@ -9,7 +9,7 @@ export const hero = {
   // Adjustable positioning line (see note above) — reframed for freelance clients,
   // leading with front-end + automation. Facts drawn from real project/skill
   // content (Next.js/React/Tailwind front-end; Python/Selenium/Gemini automation).
-  subline: 'Front-end developer & automation engineer',
+  subline: 'I build modern websites and web applications, from first idea to launch.',
   description:
     'I build fast, refined websites with Next.js, React and Tailwind — and Python automation that turns manual, repetitive work into reliable pipelines. Currently available for freelance projects.',
   // New UI microcopy introduced by the redesign (§5.1①) — not existing bio content.
