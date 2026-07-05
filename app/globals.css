@@ -1,8 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ============================================================
+   Ink + Lime design tokens (spec §2.1)
+   Colors flip on the data-theme attribute set by next-themes.
+   Tailwind color utilities point at these variables (§3.3).
+   ============================================================ */
+@layer base {
+  :root,
+  [data-theme='dark'] {
+    --bg: #101010;
+    --surface: #191919;
+    --surface-2: #1f1f1f;
+    --border: #292929;
+    --text: #efefec;
+    --muted: #8f8f8b;
+    --accent: #d3fd50; /* lime FILL — brand constant, same in both themes */
+    --accent-ink: #121212; /* text placed ON lime fill */
+    --accent-text: #d3fd50; /* lime used AS text / link / underline */
+  }
+
+  [data-theme='light'] {
+    --bg: #f6f6f4;
+    --surface: #ffffff;
+    --surface-2: #efefec;
+    --border: #e4e4e1;
+    --text: #121212;
+    --muted: #67675f;
+    --accent: #d3fd50; /* fill stays identical in light mode */
+    --accent-ink: #121212;
+    --accent-text: #3a5e00; /* darkened so lime text stays readable on off-white */
+  }
+}
 
 @layer base {
   *,
@@ -18,12 +48,14 @@
   body {
     margin: 0;
     overflow-x: hidden;
-    font-family: 'Inter', Arial, sans-serif;
+    font-family: var(--font-body), Arial, sans-serif;
     line-height: 1.6;
-    color: #1f1f1f;
-    background-color: #ffffff;
+    color: var(--text);
+    background-color: var(--bg);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* smooth fade on theme switch (§3.2) */
+    transition: background-color 0.4s ease, color 0.4s ease;
   }
 
   h1, h2, h3, h4, h5, h6, p {
@@ -48,5 +80,20 @@
 
   button {
     font: inherit;
+  }
+}
+
+/* Reduced-motion safety net (spec §8) — covers CSS transitions/animations that
+   Framer Motion's MotionConfig doesn't manage (theme fade, hover transitions,
+   the scroll-driven timeline glow, etc.). Framer components are handled by
+   MotionConfig reducedMotion="user" in ThemeProvider. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
