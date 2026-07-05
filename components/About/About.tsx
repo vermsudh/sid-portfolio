@@ -1,82 +1,105 @@
 'use client'
 
-import { motion, type Variants } from 'framer-motion'
-import aboutBackground from '@/assets/about-me-background.png'
+import { useEffect, useMemo, useRef } from 'react'
+import { motion } from 'framer-motion'
+import { about } from '@/content/site/about'
 
-const wordVariants: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 12,
-    filter: 'blur(6px)',
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    filter: 'blur(0px)',
-    transition: {
-      duration: 0.45,
-      ease: 'easeOut',
-    },
-  },
-}
-
-const RevealText = ({ text }: { text: string }) => {
-  return (
-    <motion.p
-      className="m-0 text-base leading-[1.85] text-[#3f3b36] max-[900px]:text-[0.98rem] max-[900px]:leading-[1.8] max-[520px]:text-[0.95rem] max-[520px]:leading-[1.75]"
-      initial={{ opacity: 0, scale: 0.98 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
-      viewport={{ once: true }}
-    >
-      {text.split(' ').map((word, index) => (
-        <motion.span
-          key={index}
-          variants={wordVariants}
-          style={{ display: 'inline-block', marginRight: '6px' }}
-        >
-          {word}
-        </motion.span>
-      ))}
-    </motion.p>
-  )
-}
+// Lazy-lerp scroll reveal, ported from the approved reference demo:
+// - targetProgress derives from how far we've scrolled through the OUTER wrapper
+//   (not the sticky inner content, whose rect stops changing once pinned).
+// - currentProgress chases targetProgress every animation frame via a lerp, which
+//   is what produces the "lazy," gently-catching-up feel — no lerp = instant jump,
+//   which defeats the point.
+// - activeCount = floor(currentProgress * totalWords); word i is active iff
+//   i < activeCount. This walks words in strict reading order (index-based), not
+//   by vertical position — position-based checks activate whole lines at once,
+//   which is the bug this implementation avoids.
+const LAZY_FACTOR = 0.06
+const NAVBAR_HEIGHT = 70 // px — components/Navbar/Navbar.tsx `h-[70px]`
+const FAINT_COLOR = 'color-mix(in srgb, var(--muted) 35%, transparent)'
 
 const About = () => {
+  const outerRef = useRef<HTMLDivElement>(null)
+  const wordRefs = useRef<(HTMLSpanElement | null)[]>([])
+  const currentProgressRef = useRef(0)
+  const rafRef = useRef<number>(0)
+
+  const words = useMemo(() => about.paragraph.split(' '), [])
+
+  useEffect(() => {
+    const outer = outerRef.current
+    if (!outer) return
+
+    const tick = () => {
+      const rect = outer.getBoundingClientRect()
+      const scrolled = -rect.top
+      const maxScroll = rect.height - window.innerHeight
+      const target = maxScroll > 0 ? Math.min(1, Math.max(0, scrolled / maxScroll)) : 1
+
+      currentProgressRef.current += (target - currentProgressRef.current) * LAZY_FACTOR
+
+      const activeCount = Math.floor(currentProgressRef.current * words.length)
+      wordRefs.current.forEach((el, i) => {
+        if (!el) return
+        el.style.color = i < activeCount ? 'var(--text)' : FAINT_COLOR
+      })
+
+      rafRef.current = requestAnimationFrame(tick)
+    }
+
+    rafRef.current = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [words.length])
+
   return (
+    // Outer wrapper — its extra height (beyond 100vh) IS the scroll distance the
+    // pin consumes. Tune this value to feel; ~250vh is the starting point.
     <section
-      className="relative overflow-hidden bg-beige text-brand-dark py-[110px] px-8 font-sans box-border isolate max-[900px]:py-[90px] max-[900px]:px-5 max-[520px]:py-[72px] max-[520px]:px-5"
       id="about"
+      ref={outerRef}
+      className="relative bg-bg"
+      style={{ minHeight: '250vh' }}
     >
-      {/* Blurred background image */}
+      {/* Inner sticky content — stays pinned below the navbar until the outer
+          wrapper's extra height runs out, then releases to Experience below. */}
       <div
-        className="absolute inset-0 -z-20 bg-cover bg-center bg-no-repeat scale-[1.03] blur-[4px] max-[900px]:blur-[3px] max-[900px]:scale-[1.02]"
-        style={{ backgroundImage: `url(${aboutBackground.src})` }}
-        aria-hidden="true"
-      />
-      {/* Overlay */}
-      <div className="absolute inset-0 -z-10 bg-[rgba(245,245,220,0.62)]" aria-hidden="true" />
+        className="sticky flex flex-col items-center justify-center px-8 text-center"
+        style={{ top: NAVBAR_HEIGHT, height: `calc(100vh - ${NAVBAR_HEIGHT}px)` }}
+      >
+        <motion.p
+          className="font-mono text-[0.72rem] uppercase tracking-[0.18em] text-accent-text"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          viewport={{ once: true }}
+        >
+          {about.eyebrow}
+        </motion.p>
 
-      <div className="w-full max-w-[1200px] mx-auto">
-        <div className="flex flex-col items-start text-left gap-5 max-w-[540px] max-[900px]:max-w-full max-[520px]:gap-4">
-          <motion.h2
-            className="m-0 mb-2 text-[clamp(2.4rem,5vw,4rem)] font-extrabold leading-[1.05] text-brand-dark max-[900px]:text-[clamp(2rem,7vw,3rem)]"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            About Me
-          </motion.h2>
+        <motion.h2
+          className="mt-4 font-display text-[clamp(2.2rem,5vw,3.75rem)] font-black uppercase leading-[1.02] text-text"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          viewport={{ once: true }}
+        >
+          {about.heading}
+        </motion.h2>
 
-          <RevealText text="I'm a Software Developer focused on building automation tools, data extraction systems, and developer-friendly workflows. My work primarily involves using Python and JavaScript to automate repetitive processes, collect structured data from complex sources, and build reliable backend pipelines." />
-
-          <RevealText text="Currently, I'm working as an SDE Intern where I'm developing an intelligent system that extracts and organizes ITAT case law data, transforming unstructured legal documents into structured datasets." />
-
-          <RevealText text="I enjoy designing systems that combine automation, scraping, and backend services to solve real-world problems and improve developer workflows." />
-
-          <RevealText text="My background in infrastructure and system operations also gives me a strong understanding of networking, security fundamentals, and debugging complex production systems." />
-        </div>
+        <p className="mt-8 max-w-[46rem] text-[clamp(1.2rem,2.6vw,1.8rem)] font-body leading-[1.6]">
+          {words.map((word, i) => (
+            <span
+              key={i}
+              ref={(el) => {
+                wordRefs.current[i] = el
+              }}
+              style={{ color: FAINT_COLOR, transition: 'color 0.5s ease' }}
+              className="mr-[0.3em] inline-block"
+            >
+              {word}
+            </span>
+          ))}
+        </p>
       </div>
     </section>
   )

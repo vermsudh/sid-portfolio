@@ -43,6 +43,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
             src={project.image}
             alt={`${project.title} screenshot`}
             fill
+            sizes="(max-width: 640px) 100vw, (max-width: 980px) 50vw, 33vw"
             className="object-cover object-top"
             style={{
               ...(project.imagePosition && { objectPosition: project.imagePosition }),

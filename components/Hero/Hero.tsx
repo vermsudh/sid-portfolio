@@ -1,10 +1,11 @@
 'use client'
 
-import { FaGithub, FaLinkedinIn } from 'react-icons/fa'
-import { FiMail } from 'react-icons/fi'
+import Link from 'next/link'
 import { motion, type Variants } from 'framer-motion'
 import Image from 'next/image'
-import profileImage from '@/assets/profile.png'
+import heroImage from '@/assets/hero-image.webp'
+import { hero } from '@/content/site/hero'
+import { heroSocials } from '@/content/site/social-links'
 
 const textContainerVariants: Variants = {
   hidden: {},
@@ -29,108 +30,115 @@ const fadeUpVariants: Variants = {
 }
 
 const imageVariants: Variants = {
-  hidden: { opacity: 0, scale: 0.9 },
+  hidden: { opacity: 0, y: 40 },
   visible: {
     opacity: 1,
-    scale: 1,
+    y: 0,
     transition: {
       duration: 0.7,
-      delay: 0.9,
+      delay: 0.5,
       ease: 'easeOut',
     },
   },
 }
 
+// Photo's real aspect ratio (1200x1600, 3:4 portrait) — keeps the fluid clamp()
+// width from distorting the image at any viewport size.
+const IMAGE_ASPECT = '3 / 4'
+
 const Hero = () => {
   return (
-    <section className="min-h-screen bg-beige text-brand-dark pt-6 px-8 pb-12 box-border max-[900px]:pt-5 max-[900px]:px-5 max-[900px]:pb-10" id="hero">
-      <div className="w-full flex items-center justify-between max-w-[1200px] mx-auto mb-10">
-        <span className="text-base font-bold tracking-[0.08em] uppercase">Sudhanshu Verma</span>
-      </div>
-
-      <div className="w-full max-w-[1200px] min-h-[calc(100vh-120px)] mx-auto grid grid-cols-[1.2fr_1fr] items-center gap-16 max-[900px]:grid-cols-1 max-[900px]:gap-10">
+    <section className="min-h-screen bg-bg text-text pt-10 px-8 pb-0 box-border max-[900px]:pt-6 max-[900px]:px-5" id="hero">
+      <div className="mx-auto grid h-[calc(100vh-90px)] w-full max-w-[1400px] grid-cols-[0.85fr_1.3fr_0.85fr] items-stretch gap-8 max-[900px]:grid-cols-1 max-[900px]:h-auto max-[900px]:gap-10 max-[900px]:py-8">
+        {/* Left column — name + short positioning line */}
         <motion.div
-          className="max-[900px]:flex max-[900px]:flex-col max-[900px]:gap-2"
+          className="flex flex-col justify-center max-[900px]:order-1"
           variants={textContainerVariants}
           initial="hidden"
           animate="visible"
         >
-          <motion.p className="text-[1.1rem] font-semibold text-[#333] mb-3" variants={fadeUpVariants}>
-            Hi, I&apos;m
-          </motion.p>
-
           <motion.h1
-            className="text-[clamp(3.5rem,7vw,6rem)] font-extrabold leading-[1.05] mb-4 text-[#444]"
+            className="font-display text-[clamp(2.5rem,4.5vw,4rem)] font-black uppercase leading-[1] mb-4 text-text"
             variants={fadeUpVariants}
           >
-            Sudhanshu
+            {hero.name}
           </motion.h1>
 
-          <motion.p className="text-base font-medium mb-5 text-[#333]" variants={fadeUpVariants}>
-            SDE Intern @ Astraea | Python • SQL • Web Scraping • Data Analysis
-          </motion.p>
-
           <motion.p
-            className="max-w-[540px] text-base leading-[1.8] text-[#555] mb-8 max-[900px]:max-w-full"
+            className="max-w-[24ch] text-[clamp(1rem,1.6vw,1.2rem)] font-semibold text-text"
             variants={fadeUpVariants}
           >
-            I build Python tools that automate data collection and processing
-            workflows. My work focuses on web scraping, data extraction, and
-            building pipelines that transform unstructured information into
-            structured datasets for analysis and insights.
+            {hero.subline}
           </motion.p>
-
-          <motion.div className="flex items-center gap-[18px] mb-8 max-[520px]:gap-[14px]" variants={fadeUpVariants}>
-            <motion.a
-              href="https://www.linkedin.com/in/vermsudh/"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center justify-center w-[52px] h-[52px] border border-brand-dark rounded-full text-brand-dark bg-transparent text-[1.25rem] transition-all duration-[250ms] ease-out cursor-pointer hover:bg-brand-dark hover:text-beige hover:-translate-y-[2px] max-[520px]:w-12 max-[520px]:h-12"
-              aria-label="LinkedIn"
-              whileHover={{ scale: 1.2 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
-            >
-              <FaLinkedinIn />
-            </motion.a>
-
-            <motion.a
-              href="https://github.com/vermsudh"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center justify-center w-[52px] h-[52px] border border-brand-dark rounded-full text-brand-dark bg-transparent text-[1.25rem] transition-all duration-[250ms] ease-out cursor-pointer hover:bg-brand-dark hover:text-beige hover:-translate-y-[2px] max-[520px]:w-12 max-[520px]:h-12"
-              aria-label="GitHub"
-              whileHover={{ scale: 1.2 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
-            >
-              <FaGithub />
-            </motion.a>
-
-            <motion.a
-              href="mailto:vermsudh@gmail.com"
-              className="inline-flex items-center justify-center w-[52px] h-[52px] border border-brand-dark rounded-full text-brand-dark bg-transparent text-[1.25rem] transition-all duration-[250ms] ease-out cursor-pointer hover:bg-brand-dark hover:text-beige hover:-translate-y-[2px] max-[520px]:w-12 max-[520px]:h-12"
-              aria-label="Email"
-              whileHover={{ scale: 1.2 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
-            >
-              <FiMail />
-            </motion.a>
-          </motion.div>
         </motion.div>
 
+        {/* Center column — original photo (full background kept), rounded-square, fluid-sized */}
         <motion.div
-          className="flex justify-center items-center max-[900px]:order-2"
+          className="flex items-center justify-center max-[900px]:order-2"
           variants={imageVariants}
           initial="hidden"
           animate="visible"
         >
-          <div className="relative w-[min(460px,88vw)] aspect-square flex items-center justify-center bg-[#ece7d4] rounded-full overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.08)] max-[900px]:w-[min(360px,92vw)]">
+          <div
+            className="relative w-[clamp(280px,36vw,560px)] overflow-hidden rounded-2xl border border-border max-[900px]:w-[clamp(240px,72vw,420px)]"
+            style={{ aspectRatio: IMAGE_ASPECT }}
+          >
             <Image
-              src={profileImage}
-              alt="Sudhanshu profile"
+              src={heroImage}
+              alt="Sudhanshu Verma"
               fill
+              priority
+              sizes="(max-width: 900px) 72vw, 560px"
               className="object-cover object-center"
             />
           </div>
+        </motion.div>
+
+        {/* Right column — badge, CTAs, socials */}
+        <motion.div
+          className="flex flex-col justify-center items-start max-[900px]:order-3 max-[900px]:items-center max-[900px]:text-center"
+          variants={textContainerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.div variants={fadeUpVariants} className="mb-6">
+            <span className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-1.5 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-muted">
+              <span className="h-2 w-2 rounded-full bg-accent" aria-hidden />
+              {hero.availabilityBadge}
+            </span>
+          </motion.div>
+
+          <motion.div className="flex flex-wrap items-center gap-4 mb-8 max-[900px]:justify-center" variants={fadeUpVariants}>
+            <Link
+              href={hero.ctas.primary.href}
+              className="inline-flex items-center justify-center rounded-full bg-accent px-6 py-3 font-body text-[0.95rem] font-semibold text-accent-ink transition-transform duration-200 hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            >
+              {hero.ctas.primary.label}
+            </Link>
+            <Link
+              href={hero.ctas.secondary.href}
+              className="inline-flex items-center justify-center rounded-full border border-border px-6 py-3 font-body text-[0.95rem] font-semibold text-text transition-colors duration-200 hover:border-accent-text hover:text-accent-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            >
+              {hero.ctas.secondary.label}
+            </Link>
+          </motion.div>
+
+          {/* Social icons — LinkedIn → Behance → Email */}
+          <motion.div className="flex items-center gap-3" variants={fadeUpVariants}>
+            {heroSocials.map(({ label, href, Icon }) =>
+              href ? (
+                <a
+                  key={label}
+                  href={href}
+                  {...(href.startsWith('mailto:') ? {} : { target: '_blank', rel: 'noreferrer' })}
+                  aria-label={label}
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border text-muted text-[1.15rem] transition-colors duration-200 hover:border-accent-text hover:text-accent-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+                >
+                  <Icon />
+                </a>
+              ) : null
+            )}
+          </motion.div>
         </motion.div>
       </div>
     </section>
