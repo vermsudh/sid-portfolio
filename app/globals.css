@@ -54,8 +54,17 @@
     background-color: var(--bg);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* smooth fade on theme switch (§3.2) */
-    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
+  /* Theme-switch transition: the circle-wipe (ThemeToggle.tsx) owns this via
+     the View Transitions API. A concurrent CSS color transition on body would
+     race the transition's frame capture and abort it with an InvalidStateError,
+     so this fallback fade only applies to browsers without View Transitions
+     support (there, ThemeToggle just calls setTheme with no animation). */
+  @supports not (view-transition-name: none) {
+    body {
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
   }
 
   h1, h2, h3, h4, h5, h6, p {
@@ -96,4 +105,95 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Hero photo — theme-safe edge blend (components/Hero/Hero.tsx). The fade is
+   a CSS mask on the img itself, never a color overlay: mask alpha is the only
+   thing that matters, so whatever the img's transparent edges reveal is
+   always the section's own --bg — light or dark — with no dark smudge. */
+.hero-photo-img {
+  object-fit: cover;
+  object-position: 40% 42%;
+  filter: grayscale(0.9) contrast(1.05);
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0%, #000 24%, #000 100%),
+    linear-gradient(0deg, transparent 0%, #000 14%, #000 100%);
+  mask-image:
+    linear-gradient(90deg, transparent 0%, #000 24%, #000 100%),
+    linear-gradient(0deg, transparent 0%, #000 14%, #000 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+@media (max-width: 820px) {
+  .hero-photo-img {
+    /* Single vertical mask: solid near the bottom (flush with the viewport
+       edge), fading to transparent going up into the text above it. */
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 100%);
+    mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 100%);
+    -webkit-mask-composite: source-over;
+    mask-composite: add;
+  }
+}
+
+/* Dot-matrix reveal driven by the theme toggle (components/ThemeToggle.tsx).
+   --dot-wipe-x/-y/-end-r are set from the click point in JS; the two radii
+   below are what actually animate. Registered via @property so the browser
+   tweens them as lengths instead of snapping like an unregistered custom
+   property would. */
+@property --dot-wipe-dot-r {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+@property --dot-wipe-circle-r {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+@keyframes dot-wipe-reveal {
+  from {
+    --dot-wipe-dot-r: 0px;
+    --dot-wipe-circle-r: 0px;
+  }
+  to {
+    /* 16px covers a 22px grid cell's half-diagonal (~15.6px) so dots have
+       fully merged into a solid fill by the time the animation ends. */
+    --dot-wipe-dot-r: 16px;
+    --dot-wipe-circle-r: var(--dot-wipe-end-r, 100vmax);
+  }
+}
+
+/* Circular-reveal theme toggle (components/ThemeToggle.tsx) — the two theme
+   snapshots must stack instead of cross-fading so the animated mask on
+   ::view-transition-new(root) reads as a wipe, not a dissolve. The mask is
+   two radial-gradient layers intersected: a tiled dot pattern (grows each
+   dot from a point to a full cell) and a single circle anchored at the click
+   point (grows from 0 to the farthest corner). Where they overlap is what's
+   visible, so the reveal reads as dots blooming outward from the click and
+   merging solid as the wipe passes. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  z-index: 1;
+  animation: dot-wipe-reveal 550ms cubic-bezier(0.65, 0.05, 0, 1) forwards;
+  -webkit-mask-image:
+    radial-gradient(circle, #000 var(--dot-wipe-dot-r), transparent calc(var(--dot-wipe-dot-r) + 0.5px)),
+    radial-gradient(circle at var(--dot-wipe-x, 50%) var(--dot-wipe-y, 50%), #000 var(--dot-wipe-circle-r), transparent calc(var(--dot-wipe-circle-r) + 1px));
+  mask-image:
+    radial-gradient(circle, #000 var(--dot-wipe-dot-r), transparent calc(var(--dot-wipe-dot-r) + 0.5px)),
+    radial-gradient(circle at var(--dot-wipe-x, 50%) var(--dot-wipe-y, 50%), #000 var(--dot-wipe-circle-r), transparent calc(var(--dot-wipe-circle-r) + 1px));
+  -webkit-mask-repeat: repeat, no-repeat;
+  mask-repeat: repeat, no-repeat;
+  -webkit-mask-size: 22px 22px, 100% 100%;
+  mask-size: 22px 22px, 100% 100%;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+::view-transition-old(root) {
+  z-index: 0;
 }
