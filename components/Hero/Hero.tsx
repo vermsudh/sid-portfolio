@@ -1,61 +1,68 @@
 'use client'
 
 import Link from 'next/link'
-import { motion, type Variants } from 'framer-motion'
+import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import Image from 'next/image'
 import heroImage from '@/assets/hero-image.webp'
 import { hero } from '@/content/site/hero'
 import { heroSocials } from '@/content/site/social-links'
 
-const textContainerVariants: Variants = {
-  hidden: {},
+const inkEase = [0.65, 0.05, 0, 1] as const
+
+const photoVariants: Variants = {
+  hidden: { opacity: 0, scale: 1.08 },
   visible: {
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.1,
-    },
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 1.2, ease: inkEase },
   },
 }
 
 const fadeUpVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 28 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.6,
-      ease: 'easeOut',
-    },
+    transition: { duration: 0.6, ease: inkEase },
   },
 }
 
-const photoVariants: Variants = {
-  hidden: { opacity: 0 },
+const nameWordVariants: Variants = {
+  hidden: { opacity: 0, y: 22, filter: 'blur(10px)' },
   visible: {
     opacity: 1,
-    transition: {
-      duration: 0.9,
-      delay: 0.2,
-      ease: 'easeOut',
-    },
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.55, ease: inkEase },
   },
 }
 
+const socialPopVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.55 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.45, ease: inkEase },
+  },
+}
+
+const nameWords = hero.fullName.split(' ')
+
 const Hero = () => {
+  const reduceMotion = useReducedMotion()
+
+  const photoMotion = reduceMotion
+    ? { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.4 } } }
+    : photoVariants
+
+  const wordMotion = reduceMotion ? fadeUpVariants : nameWordVariants
+  const socialMotion = reduceMotion ? fadeUpVariants : socialPopVariants
+
   return (
     <section id="hero" className="relative min-h-screen bg-bg text-text">
-      {/* Photo — bleeds off the top (behind the sticky 70px navbar, see
-          components/Navbar/Navbar.tsx) and right edges of the viewport on
-          desktop; pinned to the bottom ~46% on mobile. All positioning is
-          done via Tailwind classes (not inline style) so the max-[820px]:
-          overrides — which must win via the cascade, not lose to inline
-          style specificity — actually take effect. Edge fade is a CSS mask
-          on the img itself (see .hero-photo-img in globals.css) so the
-          section's own --bg shows through in both themes; never a color
-          overlay. */}
       <motion.div
         className="hero-photo pointer-events-none absolute right-0 top-[-70px] h-[calc(100%+70px)] w-[51%] max-[820px]:left-0 max-[820px]:right-0 max-[820px]:top-auto max-[820px]:bottom-0 max-[820px]:h-[46%] max-[820px]:w-full"
-        variants={photoVariants}
+        variants={photoMotion}
         initial="hidden"
         animate="visible"
       >
@@ -69,39 +76,81 @@ const Hero = () => {
         />
       </motion.div>
 
-      {/* Text column reserves its own grid track so it can never run under
-          the photo, at any viewport width down to the mobile breakpoint. */}
       <div className="relative z-10 mx-auto grid min-h-screen w-full max-w-[1600px] grid-cols-[1fr_51%] items-center gap-8 px-8 max-[820px]:grid-cols-1 max-[820px]:px-5">
-        <motion.div
-          className="flex flex-col items-start justify-center py-20 max-[820px]:items-center max-[820px]:pb-[50vh] max-[820px]:pt-24 max-[820px]:text-center"
-          variants={textContainerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.div variants={fadeUpVariants} className="mb-6">
+        <div className="flex flex-col items-start justify-center py-20 max-[820px]:items-center max-[820px]:pb-[50vh] max-[820px]:pt-24 max-[820px]:text-center">
+          {/* Badge — fade up + pulsing availability dot */}
+          <motion.div
+            className="mb-6"
+            variants={fadeUpVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.12 }}
+          >
             <span className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-1.5 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-muted">
-              <span className="h-2 w-2 rounded-full bg-accent" aria-hidden />
+              <motion.span
+                className="h-2 w-2 rounded-full bg-accent"
+                aria-hidden
+                animate={
+                  reduceMotion
+                    ? undefined
+                    : { scale: [1, 1.3, 1], opacity: [1, 0.65, 1] }
+                }
+                transition={
+                  reduceMotion
+                    ? undefined
+                    : { duration: 2.2, repeat: Infinity, ease: 'easeInOut' }
+                }
+              />
               {hero.availabilityBadge}
             </span>
           </motion.div>
 
-          <motion.h1 className="font-display mb-5 leading-[0.9]" variants={fadeUpVariants}>
-            <span className="block text-[clamp(1.1rem,1.6vw,1.4rem)] font-medium normal-case text-muted mb-2">
+          {/* Name — eyebrow fade, then split-word blur reveal */}
+          <h1 className="font-display mb-5 leading-[0.9]">
+            <motion.span
+              className="mb-2 block text-[clamp(1.1rem,1.6vw,1.4rem)] font-medium normal-case text-muted"
+              variants={fadeUpVariants}
+              initial="hidden"
+              animate="visible"
+              transition={{ delay: 0.22 }}
+            >
               {hero.eyebrow}
-            </span>
-            <span className="block text-[clamp(3.25rem,8vw,8.25rem)] font-black uppercase tracking-tight text-accent-text">
-              {hero.fullName}
-            </span>
-          </motion.h1>
+            </motion.span>
+            <motion.span
+              className="block text-[clamp(3.25rem,8vw,8.25rem)] font-black uppercase tracking-tight text-accent-text"
+              initial="hidden"
+              animate="visible"
+              variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.12, delayChildren: 0.3 } } }}
+            >
+              {nameWords.map((word) => (
+                <motion.span
+                  key={word}
+                  variants={wordMotion}
+                  className="mr-[0.12em] inline-block last:mr-0"
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </motion.span>
+          </h1>
 
           <motion.p
-            className="max-w-[38ch] font-body text-[clamp(1rem,1.6vw,1.2rem)] font-medium text-muted mb-8"
+            className="mb-8 max-w-[38ch] font-body text-[clamp(1rem,1.6vw,1.2rem)] font-medium text-muted"
             variants={fadeUpVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.52 }}
           >
             {hero.subline}
           </motion.p>
 
-          <motion.div className="flex flex-wrap items-center gap-4 mb-8 max-[820px]:justify-center" variants={fadeUpVariants}>
+          <motion.div
+            className="mb-8 flex flex-wrap items-center gap-4 max-[820px]:justify-center"
+            variants={fadeUpVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.62 }}
+          >
             <Link
               href={hero.ctas.primary.href}
               className="inline-flex items-center justify-center rounded-full bg-accent px-6 py-3 font-body text-[0.95rem] font-semibold text-accent-ink transition-transform duration-200 hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
@@ -116,27 +165,38 @@ const Hero = () => {
             </Link>
           </motion.div>
 
-          {/* Social icons — LinkedIn → Behance → Email */}
-          <motion.div className="flex items-center gap-3" variants={fadeUpVariants}>
+          {/* Social icons — scale pop stagger */}
+          <motion.div
+            className="flex items-center gap-3"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: {},
+              visible: {
+                transition: {
+                  staggerChildren: reduceMotion ? 0 : 0.08,
+                  delayChildren: reduceMotion ? 0.2 : 0.92,
+                },
+              },
+            }}
+          >
             {heroSocials.map(({ label, href, Icon }) =>
               href ? (
-                <a
+                <motion.a
                   key={label}
                   href={href}
                   {...(href.startsWith('mailto:') ? {} : { target: '_blank', rel: 'noreferrer' })}
                   aria-label={label}
+                  variants={socialMotion}
                   className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border text-muted text-[1.15rem] transition-colors duration-200 hover:border-accent-text hover:text-accent-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                 >
                   <Icon />
-                </a>
+                </motion.a>
               ) : null
             )}
           </motion.div>
-        </motion.div>
+        </div>
 
-        {/* Empty grid cell — reserves the right-hand width so the photo's
-            visual space is never claimed by text, even though the photo
-            itself is absolutely positioned and rendered outside this grid. */}
         <div className="max-[820px]:hidden" aria-hidden />
       </div>
     </section>
