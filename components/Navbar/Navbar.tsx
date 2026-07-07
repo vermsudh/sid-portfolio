@@ -66,7 +66,7 @@ const Navbar = () => {
           <Link href="/experience" className={navLinkClass}>
             Experience
           </Link>
-          <Link href="/testimonials" className={navLinkClass}>
+          <Link href="/#testimonials" className={navLinkClass}>
             Testimonials
           </Link>
         </div>
@@ -102,7 +102,7 @@ const Navbar = () => {
           <Link href="/experience" className={mobileNavLinkClass} onClick={() => setIsMenuOpen(false)}>
             Experience
           </Link>
-          <Link href="/testimonials" className={mobileNavLinkClass} onClick={() => setIsMenuOpen(false)}>
+          <Link href="/#testimonials" className={mobileNavLinkClass} onClick={() => setIsMenuOpen(false)}>
             Testimonials
           </Link>
         </div>
