@@ -15,6 +15,10 @@ import { about } from '@/content/site/about'
 //   by vertical position — position-based checks activate whole lines at once,
 //   which is the bug this implementation avoids.
 const LAZY_FACTOR = 0.06
+// The lerp only ever approaches its target asymptotically, so raw progress never
+// hits exactly 1. Remapping through this threshold lets the reveal reach 100%
+// (lighting up the final word) a little before the scroll/pin fully releases.
+const REVEAL_COMPLETION = 0.85
 const NAVBAR_HEIGHT = 70 // px — components/Navbar/Navbar.tsx `h-[70px]`
 const FAINT_COLOR = 'color-mix(in srgb, var(--muted) 35%, transparent)'
 
@@ -38,7 +42,8 @@ const About = () => {
 
       currentProgressRef.current += (target - currentProgressRef.current) * LAZY_FACTOR
 
-      const activeCount = Math.floor(currentProgressRef.current * words.length)
+      const revealProgress = Math.min(1, currentProgressRef.current / REVEAL_COMPLETION)
+      const activeCount = Math.round(revealProgress * words.length)
       wordRefs.current.forEach((el, i) => {
         if (!el) return
         el.style.color = i < activeCount ? 'var(--text)' : FAINT_COLOR

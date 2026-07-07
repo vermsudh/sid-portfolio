@@ -58,15 +58,20 @@ const Navbar = () => {
           <span className="text-accent-text">.</span>
         </Link>
 
-        <div className="flex items-center gap-[30px] max-[768px]:gap-[18px]">
-          {/* Plain text links collapse on mobile behind the hamburger; Hire me + toggle stay visible */}
-          <Link href="/projects" className={`${navLinkClass} max-[560px]:hidden`}>
+        {/* Centered nav links — collapse on mobile behind the hamburger */}
+        <div className="flex flex-1 items-center justify-center gap-[30px] max-[560px]:hidden">
+          <Link href="/projects" className={navLinkClass}>
             Projects
           </Link>
-          <Link href="/experience" className={`${navLinkClass} max-[560px]:hidden`}>
+          <Link href="/experience" className={navLinkClass}>
             Experience
           </Link>
+          <Link href="/testimonials" className={navLinkClass}>
+            Testimonials
+          </Link>
+        </div>
 
+        <div className="flex items-center gap-[30px] max-[768px]:gap-[18px]">
           <Link
             href="/contact"
             className="font-body text-[15px] font-semibold rounded-full bg-accent text-accent-ink px-5 py-2 transition-transform duration-200 hover:scale-[1.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:ring-offset-2 focus-visible:ring-offset-bg max-[768px]:text-[14px] max-[768px]:px-4"
@@ -96,6 +101,9 @@ const Navbar = () => {
           </Link>
           <Link href="/experience" className={mobileNavLinkClass} onClick={() => setIsMenuOpen(false)}>
             Experience
+          </Link>
+          <Link href="/testimonials" className={mobileNavLinkClass} onClick={() => setIsMenuOpen(false)}>
+            Testimonials
           </Link>
         </div>
       )}
