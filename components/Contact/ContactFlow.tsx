@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { AnimatePresence, motion, type Variants } from 'framer-motion'
+import { ShoppingCart, UserRound, Sparkles, type LucideIcon } from 'lucide-react'
 import emailjs from '@emailjs/browser'
 import { WHATSAPP_NUMBER } from '@/content/site/social-links'
 
@@ -14,10 +15,10 @@ const stepVariants: Variants = {
 
 type Service = 'ecommerce' | 'portfolio' | 'other'
 
-const SERVICE_OPTIONS: { id: Service; label: string; emoji: string }[] = [
-  { id: 'ecommerce', label: 'E-commerce Platform', emoji: '🛒' },
-  { id: 'portfolio', label: 'Personal Portfolio', emoji: '🧑‍💻' },
-  { id: 'other', label: 'Something else', emoji: '✨' },
+const SERVICE_OPTIONS: { id: Service; label: string; icon: LucideIcon }[] = [
+  { id: 'ecommerce', label: 'E-commerce Platform', icon: ShoppingCart },
+  { id: 'portfolio', label: 'Personal Portfolio', icon: UserRound },
+  { id: 'other', label: 'Something else', icon: Sparkles },
 ]
 
 // Human-readable service label used in both send paths.
@@ -133,6 +134,7 @@ export default function ContactFlow() {
             <div className="mt-6 flex flex-col gap-3">
               {SERVICE_OPTIONS.map((opt) => {
                 const selected = service === opt.id
+                const Icon = opt.icon
                 return (
                   <button
                     key={opt.id}
@@ -145,7 +147,7 @@ export default function ContactFlow() {
                         : 'border-border text-muted hover:border-accent-text hover:text-text'
                     }`}
                   >
-                    <span aria-hidden>{opt.emoji}</span>
+                    <Icon aria-hidden size={18} strokeWidth={1.75} className="shrink-0" />
                     {opt.label}
                   </button>
                 )
