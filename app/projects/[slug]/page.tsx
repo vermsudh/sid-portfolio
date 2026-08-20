@@ -33,6 +33,27 @@ function renderableImage(
   return thumbnail
 }
 
+function BulletSection({ heading, items }: { heading: string; items: string[] }) {
+  return (
+    <section className="mt-12">
+      <h2 className="font-mono text-[0.72rem] uppercase tracking-[0.16em] text-accent-text">
+        // {heading}
+      </h2>
+      <ul className="mt-4 max-w-[60ch] space-y-3">
+        {items.map((item, i) => (
+          <li
+            key={i}
+            className="flex gap-3 font-body text-[1.05rem] leading-[1.6] text-muted max-[520px]:text-[0.95rem]"
+          >
+            <span aria-hidden className="mt-[0.5em] h-1.5 w-1.5 shrink-0 rounded-full bg-accent-text" />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
 function PendingSlot() {
   return (
     <div
@@ -125,6 +146,14 @@ export default async function CaseStudyPage({
           </p>
         </section>
 
+        {/* 2b. Problem / solution — only for projects with a full case study */}
+        {project.fullCaseStudy && (
+          <>
+            <BulletSection heading="the problem" items={project.fullCaseStudy.problem} />
+            <BulletSection heading="how it works" items={project.fullCaseStudy.solution} />
+          </>
+        )}
+
         {/* 3. Tech stack */}
         <section className="mt-12">
           <h2 className="font-mono text-[0.72rem] uppercase tracking-[0.16em] text-accent-text">
@@ -141,6 +170,11 @@ export default async function CaseStudyPage({
             ))}
           </div>
         </section>
+
+        {/* 3b. Impact — only for projects with a full case study */}
+        {project.fullCaseStudy && (
+          <BulletSection heading="the impact" items={project.fullCaseStudy.impact} />
+        )}
 
         {/* 4. Media gallery — cover crops to 16:9; extra gallery shots render at
             their native aspect ratio, uncropped, each with a one-line caption. */}

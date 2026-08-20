@@ -2,6 +2,12 @@ import type { StaticImageData } from 'next/image'
 
 export type Category = 'Front-end' | 'Full-stack' | 'Automation'
 
+export interface CaseStudy {
+  problem: string[]
+  solution: string[]
+  impact: string[]
+}
+
 // Normalized project shape. Structurally compatible with ProjectRowData
 // (components/Projects/ProjectRow.tsx) — the required fields match, extra fields
 // (features, builtWith, imageFit/Bg, fullCaseStudy) are preserved for later use.
@@ -21,7 +27,7 @@ export interface Project {
   builtWith?: string
   imageFit?: 'cover' | 'contain'
   imageBg?: string
-  fullCaseStudy?: Record<string, unknown>
+  fullCaseStudy?: CaseStudy
   gallery?: (StaticImageData | string)[]
   galleryCaptions?: string[]
 }

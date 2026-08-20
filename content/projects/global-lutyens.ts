@@ -23,9 +23,21 @@ export const globalLutyens: Project = {
   thumbnail: thumbnail, // TODO: fresh relaunch screenshot pending (legacy asset exists but may be stale)
   featured: false,
   fullCaseStudy: {
-    // TODO: populate from docs/project-references/Global_Lutyens_Case_Study.md
-    // (source doc arrives in Stage 12). Stored here for a future /projects/[slug]
-    // detail page; not rendered this phase.
-    status: 'pending-source-doc',
+    problem: [
+      'The firm was spending ₹12–15 lakh/year renting leads on 99Acres — unbranded, unowned traffic that didn’t build any lasting digital asset for the business.',
+      'As a private, HNI-focused advisory, the firm had no digital presence that matched its actual positioning; it needed to look like a private office in the mold of Savills or Knight Frank Private Office, not a mass-market listings portal.',
+    ],
+    solution: [
+      'Analyzed 44 historical portal leads from the firm’s own CRM data to confirm the real audience — ~100% South Delhi, ~84% residential intent, ₹3–20 Cr ticket sizes — and used that to drive the site’s navigation, positioning, and tone instead of guesswork.',
+      'Built on Next.js 16, React 19, TypeScript, and Tailwind CSS v4 against a locked "Estate Green / Antique Gold" design system, documented token-by-token with an explicit application ratio and do/don’t rules.',
+      'Ran a structured three-tool AI workflow — plan and lock copy and structure in Claude chat, scaffold each page in Claude Code against a fully-specified brief, then polish spacing and responsiveness in Cursor — repeated consistently across every page.',
+      'Shipped a self-contained Knowledge Center — a 60-entry searchable glossary, a 3-level dynamic locality map browser, and regulatory reference pages — as a standalone public resource, not just another page.',
+      'Delivered assets via Cloudflare R2 rather than bundling them into the repo, to keep Vercel bandwidth costs down.',
+    ],
+    impact: [
+      'Replaced a recurring, rented lead-generation expense with an owned, brand-controlled digital channel, positioned to support a planned Google Ads push (₹25,000/month, hyper-local South Delhi keywords).',
+      'Delivered a fully brand-consistent multi-page site — home, about, services, contact, and a full regulatory knowledge center — built solo while learning Next.js and React during the engagement.',
+      'Left the infrastructure — Cloudflare R2, a typed content layer, CMS-ready architecture — in place to support the firm’s next phases (Sanity CMS, neighbourhood landing pages, lead pipeline) without a rebuild.',
+    ],
   },
 }
