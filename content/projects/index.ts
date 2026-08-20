@@ -8,6 +8,7 @@ import { pinterestPublishingPipeline } from './pinterest-publishing-pipeline'
 import { caseLawExtractionAgent } from './case-law-extraction-agent'
 import { captchaSolvingAgent } from './captcha-solving-agent'
 import { taxtechIntelligencePipeline } from './taxtech-intelligence-pipeline'
+import { globalLutyensCrm } from './global-lutyens-crm'
 
 export type { Project, Category } from './types'
 
@@ -22,16 +23,17 @@ export const projects: Project[] = [
   caseLawExtractionAgent,
   captchaSolvingAgent,
   taxtechIntelligencePipeline,
+  globalLutyensCrm,
 ]
 
 // The confirmed Home featured set (spec §5.1②), in exact order. Hard-set by slug
 // so it's authoritative regardless of any `featured` flags. Single source of truth
 // for the Home featured section, the /projects ranked order, and the "next" wrap.
 const FEATURED_SLUGS = [
-  'global-lutyens',
-  'wee-portfolio',
-  'captcha-solving-agent',
   'case-law-extraction-agent',
+  'captcha-solving-agent',
+  'global-lutyens-crm',
+  'wee-portfolio',
 ]
 
 const bySlug = (slug: string) => projects.find((p) => p.slug === slug)

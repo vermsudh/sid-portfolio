@@ -22,4 +22,6 @@ export interface Project {
   imageFit?: 'cover' | 'contain'
   imageBg?: string
   fullCaseStudy?: Record<string, unknown>
+  gallery?: (StaticImageData | string)[]
+  galleryCaptions?: string[]
 }

@@ -142,7 +142,8 @@ export default async function CaseStudyPage({
           </div>
         </section>
 
-        {/* 4. Media gallery — grid ready for multiple assets; today one slot */}
+        {/* 4. Media gallery — cover crops to 16:9; extra gallery shots render at
+            their native aspect ratio, uncropped, each with a one-line caption. */}
         <section className="mt-12">
           <h2 className="font-mono text-[0.72rem] uppercase tracking-[0.16em] text-accent-text">
             // gallery
@@ -161,6 +162,24 @@ export default async function CaseStudyPage({
             ) : (
               <PendingSlot />
             )}
+
+            {project.gallery?.map((shot, i) => (
+              <figure key={i} className="m-0">
+                <div className="overflow-hidden rounded-2xl border border-border bg-surface-2">
+                  <Image
+                    src={shot}
+                    alt={`${project.title} screenshot ${i + 2}`}
+                    sizes="(max-width: 900px) 100vw, 900px"
+                    className="h-auto w-full"
+                  />
+                </div>
+                {project.galleryCaptions?.[i] && (
+                  <figcaption className="mt-3 font-mono text-[0.72rem] uppercase tracking-[0.1em] text-muted">
+                    {project.galleryCaptions[i]}
+                  </figcaption>
+                )}
+              </figure>
+            ))}
           </div>
         </section>
 

@@ -21,7 +21,7 @@ export const globalLutyens: Project = {
   link: 'https://www.globallutyens.com',
   behanceLink: 'https://www.behance.net/gallery/252105403/Global-Lutyens-Website',
   thumbnail: thumbnail, // TODO: fresh relaunch screenshot pending (legacy asset exists but may be stale)
-  featured: true,
+  featured: false,
   fullCaseStudy: {
     // TODO: populate from docs/project-references/Global_Lutyens_Case_Study.md
     // (source doc arrives in Stage 12). Stored here for a future /projects/[slug]
