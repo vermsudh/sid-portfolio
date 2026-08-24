@@ -106,7 +106,7 @@ const Hero = () => {
           </motion.div>
 
           {/* Name — eyebrow fade, then split-word blur reveal */}
-          <h1 className="font-display mb-5 leading-[0.9]">
+          <h1 className="font-display mb-4 leading-[0.9]">
             <motion.span
               className="mb-2 block text-[clamp(1.1rem,1.6vw,1.4rem)] font-medium normal-case text-muted"
               variants={fadeUpVariants}
@@ -133,6 +133,23 @@ const Hero = () => {
               ))}
             </motion.span>
           </h1>
+
+          {/* Role title — accent bar + tracked display type, one step below the name */}
+          <motion.div
+            className="mb-7 flex items-center gap-4 max-[820px]:justify-center max-[820px]:gap-3"
+            variants={fadeUpVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.44 }}
+          >
+            <span
+              className="h-[3px] w-12 shrink-0 rounded-full bg-accent max-[820px]:w-8"
+              aria-hidden
+            />
+            <p className="font-display m-0 text-[clamp(1.25rem,2.6vw,2.15rem)] font-semibold uppercase leading-none tracking-[0.08em] text-text">
+              {hero.title}
+            </p>
+          </motion.div>
 
           <motion.p
             className="mb-8 max-w-[38ch] font-body text-[clamp(1rem,1.6vw,1.2rem)] font-medium text-muted"

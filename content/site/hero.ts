@@ -6,6 +6,8 @@ export const hero = {
   eyebrow: "Hi, I'm",
   name: 'Sudhanshu',
   fullName: 'Sudhanshu Verma',
+  // Role title shown directly beneath the name in the hero.
+  title: 'Software Developer',
   // Adjustable positioning line (see note above) — reframed for freelance clients,
   // leading with front-end + automation. Facts drawn from real project/skill
   // content (Next.js/React/Tailwind front-end; Python/Selenium/Gemini automation).
