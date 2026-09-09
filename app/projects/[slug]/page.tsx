@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import Image, { type StaticImageData } from 'next/image'
+import { type StaticImageData } from 'next/image'
 import { notFound } from 'next/navigation'
 import { projects, getProjectBySlug, getNextProject } from '@/content/projects'
+import GalleryCarousel from '@/components/Projects/GalleryCarousel'
 
 // One static page per project slug.
 export function generateStaticParams() {
@@ -51,22 +52,6 @@ function BulletSection({ heading, items }: { heading: string; items: string[] })
         ))}
       </ul>
     </section>
-  )
-}
-
-function PendingSlot() {
-  return (
-    <div
-      className="flex aspect-[16/9] w-full items-center justify-center rounded-2xl border border-border bg-surface-2"
-      style={{
-        backgroundImage:
-          'repeating-linear-gradient(45deg, var(--border) 0, var(--border) 1px, transparent 1px, transparent 11px)',
-      }}
-    >
-      <span className="rounded-md border border-dashed border-muted/60 bg-surface/70 px-3 py-1.5 font-mono text-[0.68rem] uppercase tracking-[0.14em] text-muted">
-        Image pending
-      </span>
-    </div>
   )
 }
 
@@ -176,44 +161,23 @@ export default async function CaseStudyPage({
           <BulletSection heading="the impact" items={project.fullCaseStudy.impact} />
         )}
 
-        {/* 4. Media gallery — cover crops to 16:9; extra gallery shots render at
-            their native aspect ratio, uncropped, each with a one-line caption. */}
+        {/* 4. Media gallery — a single cropped cover when there's only one shot;
+            a swipeable carousel (buttons + drag + dots) once `gallery` adds more. */}
         <section className="mt-12">
           <h2 className="font-mono text-[0.72rem] uppercase tracking-[0.16em] text-accent-text">
             // gallery
           </h2>
-          <div className="mt-4 grid grid-cols-1 gap-5">
-            {img ? (
-              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-border bg-surface-2">
-                <Image
-                  src={img}
-                  alt={`${project.title} screenshot`}
-                  fill
-                  sizes="(max-width: 900px) 100vw, 900px"
-                  className="object-cover object-top"
-                />
-              </div>
-            ) : (
-              <PendingSlot />
-            )}
-
-            {project.gallery?.map((shot, i) => (
-              <figure key={i} className="m-0">
-                <div className="overflow-hidden rounded-2xl border border-border bg-surface-2">
-                  <Image
-                    src={shot}
-                    alt={`${project.title} screenshot ${i + 2}`}
-                    sizes="(max-width: 900px) 100vw, 900px"
-                    className="h-auto w-full"
-                  />
-                </div>
-                {project.galleryCaptions?.[i] && (
-                  <figcaption className="mt-3 font-mono text-[0.72rem] uppercase tracking-[0.1em] text-muted">
-                    {project.galleryCaptions[i]}
-                  </figcaption>
-                )}
-              </figure>
-            ))}
+          <div className="mt-4">
+            <GalleryCarousel
+              slides={[
+                ...(img ? [{ src: img, alt: `${project.title} screenshot` }] : []),
+                ...(project.gallery?.map((shot, i) => ({
+                  src: shot,
+                  alt: `${project.title} screenshot ${i + 2}`,
+                  caption: project.galleryCaptions?.[i],
+                })) ?? []),
+              ]}
+            />
           </div>
         </section>
 
