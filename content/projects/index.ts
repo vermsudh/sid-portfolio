@@ -9,6 +9,7 @@ import { caseLawExtractionAgent } from './case-law-extraction-agent'
 import { captchaSolvingAgent } from './captcha-solving-agent'
 import { taxtechIntelligencePipeline } from './taxtech-intelligence-pipeline'
 import { globalLutyensCrm } from './global-lutyens-crm'
+import { arWaseemPortfolio } from './ar-waseem-portfolio'
 
 export type { Project, Category } from './types'
 
@@ -24,6 +25,7 @@ export const projects: Project[] = [
   captchaSolvingAgent,
   taxtechIntelligencePipeline,
   globalLutyensCrm,
+  arWaseemPortfolio,
 ]
 
 // The confirmed Home featured set (spec §5.1②), in exact order. Hard-set by slug
@@ -33,7 +35,7 @@ const FEATURED_SLUGS = [
   'case-law-extraction-agent',
   'captcha-solving-agent',
   'global-lutyens-crm',
-  'wee-portfolio',
+  'ar-waseem-portfolio',
 ]
 
 const bySlug = (slug: string) => projects.find((p) => p.slug === slug)
