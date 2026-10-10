@@ -10,22 +10,28 @@ import { captchaSolvingAgent } from './captcha-solving-agent'
 import { taxtechIntelligencePipeline } from './taxtech-intelligence-pipeline'
 import { globalLutyensCrm } from './global-lutyens-crm'
 import { arWaseemPortfolio } from './ar-waseem-portfolio'
+import { globalLutyensAdmin } from './global-lutyens-admin'
+import { shriSanatanDharamWebsite } from './shri-sanatan-dharam-website'
+import { shriSanatanDharamAdmin } from './shri-sanatan-dharam-admin'
 
 export type { Project, Category } from './types'
 
-// Order preserved from the original data/projects.js.
+// Display order: featured four, then the Sabha site + admin, then the rest; Job Copilot and Sri Balaji Electronics last.
 export const projects: Project[] = [
-  sriBalajiElectronics,
-  weePortfolio,
-  awonArchitects,
-  globalLutyens,
-  jobCopilot,
-  pinterestPublishingPipeline,
   caseLawExtractionAgent,
   captchaSolvingAgent,
-  taxtechIntelligencePipeline,
   globalLutyensCrm,
   arWaseemPortfolio,
+  weePortfolio,
+  shriSanatanDharamWebsite,
+  shriSanatanDharamAdmin,
+  globalLutyens,
+  globalLutyensAdmin,
+  awonArchitects,
+  pinterestPublishingPipeline,
+  taxtechIntelligencePipeline,
+  jobCopilot,
+  sriBalajiElectronics,
 ]
 
 // The confirmed Home featured set (spec §5.1②), in exact order. Hard-set by slug
