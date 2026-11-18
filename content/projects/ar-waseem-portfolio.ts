@@ -15,7 +15,7 @@ export const arWaseemPortfolio: Project = {
   description:
     'Portfolio site for a Delhi-based architect, built to make a dense archive of working drawings — mostly employer-credited CAD sheets, not photography — read as the product in under ninety seconds.',
   tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Cloudflare R2'],
-  link: 'https://ar-waseem-portfolio.vercel.app/',
+  link: 'https://ar-waseem-portfolio.netlify.app/',
   behanceLink: null,
   thumbnail,
   gallery: [featuredProjects, projectBook, projectPage, experienceSection, contactPage],
